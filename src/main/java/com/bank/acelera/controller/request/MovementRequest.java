@@ -1,4 +1,4 @@
-package com.bank.acelera.controller.transaction.request;
+package com.bank.acelera.controller.request;
 
 public class MovementRequest {
 
@@ -32,14 +32,5 @@ public class MovementRequest {
 
     public void setAccountNumber(Long accountNumber) {
         this.accountNumber = accountNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "MovementRequest{" +
-                "value=" + value +
-                ", type='" + type + '\'' +
-                ", accountNumber=" + accountNumber +
-                '}';
     }
 }

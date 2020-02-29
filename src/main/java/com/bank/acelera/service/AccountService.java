@@ -5,13 +5,17 @@
  */
 package com.bank.acelera.service;
 
-import com.bank.acelera.controller.transaction.converter.MovementConverter;
-import com.bank.acelera.controller.transaction.request.MovementRequest;
+import com.bank.acelera.controller.converter.MovementConverter;
+import com.bank.acelera.controller.request.MovementRequest;
+import com.bank.acelera.controller.response.MovementResponse;
 import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.repository.AccountRepository;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -122,5 +126,16 @@ public class AccountService {
         } else {
             throw new IllegalArgumentException("Closed account");
         }
+    }
+
+    /**
+     * Returns the account movements
+     *
+     * @param accountNumber
+     * @return
+     */
+    public List<MovementResponse> getMovements(Long accountNumber) {
+        Account account = this.findByNumber(accountNumber);
+        return movementConverter.converterList(account.getMovements());
     }
 }
