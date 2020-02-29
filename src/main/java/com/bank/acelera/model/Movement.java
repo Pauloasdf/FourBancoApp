@@ -41,7 +41,6 @@ public class Movement {
     }
    
     public Movement(float value, Type type) {
-        this.date = new Date();
         this.value = value;
         this.type = type;
     }
@@ -54,6 +53,10 @@ public class Movement {
         return date;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
     public Type getType() {
         return type;
     }

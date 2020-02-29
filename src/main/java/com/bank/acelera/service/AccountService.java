@@ -11,6 +11,7 @@ import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.repository.AccountRepository;
 import java.util.ArrayList;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +61,7 @@ public class AccountService {
         
         if(account != null && this.allowedMovement(account, movement)) {
             
+            movement.setDate(new Date());
             movement.setAccount(account);
             
             try {

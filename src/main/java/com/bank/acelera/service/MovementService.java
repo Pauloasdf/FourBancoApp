@@ -5,9 +5,10 @@
  */
 package com.bank.acelera.service;
 
-import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.repository.MovementRepository;
+import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,9 @@ public class MovementService {
         return movementRepository.save(movement);
     }
     
-    
+    public List<Movement> findBetween(Long numberAccount, Date start, Date end){
+        List<Movement> movements = movementRepository.findByDateBetween(start, end);
+        
+        return movements;
+    }
 }
