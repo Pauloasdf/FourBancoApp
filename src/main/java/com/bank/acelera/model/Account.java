@@ -143,43 +143,21 @@ public class Account {
     }
     
     /**
-     * Allowed movement
-     * 
-     * @param Moviment
-     * @return 
+     * Reduce value
+     * @param valeu
      */
-    public boolean allowedMovement(Movement movement){
-        if(this.isOpened()){
-            switch(movement.getType()){
-                case CREDIT:
-                    return true;
-                case DEBIT:
-                    return this.balance > movement.getValue();
-            }
-        }
-        return false;
+    public void reduce(float value){
+        this.balance = this.balance - value;
     }
     
     /**
-     * Calculate the balance
-     * 
-     * @param movement 
+     * Increment value
+     * @param value 
      */
-    public void calculateTheBalance(Movement movement){
-        if(this.isOpened()){
-            switch(movement.getType()){
-                case CREDIT:
-                    this.balance = this.balance + movement.getValue();
-                   break;
-                case DEBIT:
-                    this.balance = this.balance - movement.getValue();
-                    break;
-            }
-        } else {
-            throw new IllegalArgumentException("Closed account");
-        }
+    public void increment(float value){
+        this.balance = this.balance + value;
     }
-   
+    
     /**
      * Encrypt the password
      * @param password

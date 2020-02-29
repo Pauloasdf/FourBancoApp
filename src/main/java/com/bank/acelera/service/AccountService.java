@@ -25,7 +25,6 @@ public class AccountService {
     @Autowired
     AccountRepository accountRepository;
     
-    
     /**
      * find by number
      * 
@@ -54,13 +53,13 @@ public class AccountService {
     public boolean addMovements(long number, Movement movement) {
         Account account = this.findByNumber(number);
         
-        if(account != null && account.allowedMovement(movement)) {
+        if(account != null && this.allowedMovement(account, movement)) {
             
             movement.setAccount(account);
             
             try {
                 movement = movementService.save(movement);
-                account.calculateTheBalance(movement);
+                this.calculateTheBalance(account, movement);
                 this.save(account);
                 return true;
             } catch (Exception e) {
@@ -70,4 +69,41 @@ public class AccountService {
         return false;
     }
     
+    /**
+     * Allowed movement
+     * 
+     * @param Moviment
+     * @return 
+     */
+    public boolean allowedMovement(Account account, Movement movement){
+        if(account.isOpened()){
+            switch(movement.getType()){
+                case CREDIT:
+                    return true;
+                case DEBIT:
+                    return account.getBalance() > movement.getValue();
+            }
+        }
+        return false;
+    }
+    
+        /**
+     * Calculate the balance
+     * 
+     * @param movement 
+     */
+    public void calculateTheBalance(Account account, Movement movement){
+        if(account.isOpened()){
+            switch(movement.getType()){
+                case CREDIT:
+                    account.increment(movement.getValue());
+                   break;
+                case DEBIT:
+                    account.reduce(movement.getValue());
+                    break;
+            }
+        } else {
+            throw new IllegalArgumentException("Closed account");
+        }
+    }
 }
