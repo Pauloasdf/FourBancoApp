@@ -2,7 +2,7 @@ package com.bank.acelera;
 
 import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
-import com.bank.acelera.model.Person;
+import com.bank.acelera.model.Physical;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import com.bank.acelera.repository.MovementRepository;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -34,8 +33,9 @@ class MovementTests {
     @BeforeEach
     public void init() {
 
-        Person person = new Person();
+        Physical person = new Physical();
         person.setName("João alfredo");
+        person.setCpf("123.123.123-53");
 
         Account account = new Account();
         account.open(11111112L, "PasSwOrd", person);

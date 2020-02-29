@@ -5,16 +5,15 @@
  */
 package com.bank.acelera.repository;
 
-import com.bank.acelera.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 /**
  *
  * @author lauro
  */
-@Repository
-public interface PersonRepository  extends JpaRepository<Person, Integer> {
+@NoRepositoryBean
+public interface PersonBaseRepository<T>  extends JpaRepository<T, Integer> {
     
-    public Person findByName(String name);
+    public T findByName(String name);
 }

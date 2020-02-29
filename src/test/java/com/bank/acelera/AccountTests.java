@@ -2,9 +2,8 @@ package com.bank.acelera;
 
 import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
-import com.bank.acelera.model.Person;
+import com.bank.acelera.model.Physical;
 import com.bank.acelera.repository.AccountRepository;
-import com.bank.acelera.repository.PersonRepository;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import com.bank.acelera.repository.PhysicalRepository;
 
 @SpringBootTest
 class AccountTests {
@@ -25,26 +25,27 @@ class AccountTests {
     private AccountRepository accountRepository;
 
     @Autowired
-    private PersonRepository personRepository;
+    private PhysicalRepository physicalRepository;
 
     @Autowired
     private AccountService accountService;
 
     private Validator validator;
 
-    private Person person;
+    private Physical physical;
 
     @BeforeEach
     public void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
 
-        if (personRepository.findByName("João alfredo") == null) {
-            this.person = new Person();
-            this.person.setName("João alfredo");
-            this.person = personRepository.save(this.person);
+        if (physicalRepository.findByName("João alfredo") == null) {
+            this.physical = new Physical();
+            this.physical.setName("João alfredo");
+            this.physical.setCpf("123.123.123-53");
+            this.physical = physicalRepository.save(this.physical);
         } else {
-            this.person = personRepository.findByName("João alfredo");
+            this.physical = physicalRepository.findByName("João alfredo");
         }
     }
 
@@ -77,7 +78,7 @@ class AccountTests {
     public void whenFindById_thenOpenDateNotNull() {
         // given
         Account account = new Account();
-        account.open(11111112L, "PasSwOrd", this.person);
+        account.open(11111112L, "PasSwOrd", this.physical);
         accountRepository.save(account);
 
         // when
@@ -94,10 +95,9 @@ class AccountTests {
         String password = "PasSwOrd";
 
         Account account = new Account();
-        account.open(11111113L, password, person);
-        
-        
-        // given      
+        account.open(11111113L, password, physical);
+                
+        // given
         account.close(password);
 
         // when
@@ -112,7 +112,7 @@ class AccountTests {
        // given
         String password = "PasSwOrd";
         Account account = new Account();
-        account.open(11111113L, password, person);
+        account.open(11111113L, password, physical);
 
         // when
         boolean allowed = accountService.allowedMovement(account, new Movement(10.00F, Movement.Type.DEBIT));
@@ -121,14 +121,13 @@ class AccountTests {
         Assertions.assertThat(allowed).isFalse();
     }
     
-
     @Test
     public void whenAddingMovements_thenTheBalanceMustBeUpdated() {
         // given
         String password = "PasSwOrd";
 
         Account account = new Account();
-        account.open(11111113L, password, person);
+        account.open(11111113L, password, physical);
         accountRepository.save(account);
 
         // when
@@ -156,5 +155,4 @@ class AccountTests {
         Assertions.assertThat(balance5).isEqualTo(5.00F);
         Assertions.assertThat(balance25).isEqualTo(25.00F);
     }
-
 }

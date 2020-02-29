@@ -5,6 +5,7 @@
  */
 package com.bank.acelera.model;
 
+import com.bank.acelera.model.abstrac.Person;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
