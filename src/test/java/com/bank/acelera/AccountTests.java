@@ -10,6 +10,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+
+import com.bank.acelera.service.AccountService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,19 +84,20 @@ class AccountTests {
     public void whenAddingMovements_thenTheBalanceMustBeUpdated() {
         // given
         String password = "PasSwOrd";
+        AccountService accountService = new AccountService();
         Account account = new Account();
         account.open(11111113L,password,person);
         
         // when
-        account.addMovements(password, new Movement(10.00F, Movement.Type.CREDIT));
+        accountService.addMovements(account.getNumber(), new Movement(10.00F, Movement.Type.CREDIT));
         accountRepository.save(account);
         
-        Account found1 = accountRepository.getOne(account.getId());        
-        found1.addMovements(password, new Movement(5.00F, Movement.Type.DEBIT));
+        Account found1 = accountRepository.getOne(account.getId());
+        accountService.addMovements(account.getNumber(), new Movement(5.00F, Movement.Type.DEBIT));
         accountRepository.save(found1);
         
         Account found2 = accountRepository.getOne(account.getId());
-        found2.addMovements(password, new Movement(20.00F, Movement.Type.CREDIT));
+        accountService.addMovements(account.getNumber(), new Movement(20.00F, Movement.Type.CREDIT));
         accountRepository.save(found2);
 
         // then

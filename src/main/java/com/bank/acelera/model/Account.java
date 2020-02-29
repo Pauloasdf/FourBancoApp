@@ -40,7 +40,7 @@ public class Account {
     
     @Column(unique = true)
     private long number;
-    
+
     private Date openDate;
     
     private Date closeDate;
@@ -129,7 +129,7 @@ public class Account {
      * @return 
      */
     private boolean validPassword(String password) {      
-        return !password.isBlank() && password.length() == 8;
+        return !password.isEmpty() || password ==  null  && password.length() == 8;
     }
         
     /**
