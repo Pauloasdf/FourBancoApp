@@ -27,6 +27,9 @@ class AccountTests {
     @Autowired
     private PersonRepository personRepository;
     
+    @Autowired
+    private AccountService accountService;
+    
     private Validator validator;
     
     private Person person = new Person();
@@ -84,21 +87,23 @@ class AccountTests {
     public void whenAddingMovements_thenTheBalanceMustBeUpdated() {
         // given
         String password = "PasSwOrd";
-        AccountService accountService = new AccountService();
+        
         Account account = new Account();
         account.open(11111113L,password,person);
+        accountRepository.save(account);
         
         // when
         accountService.addMovements(account.getNumber(), new Movement(10.00F, Movement.Type.CREDIT));
-        accountRepository.save(account);
+        
+        account = accountRepository.getOne(account.getId());
         
         Account found1 = accountRepository.getOne(account.getId());
         accountService.addMovements(account.getNumber(), new Movement(5.00F, Movement.Type.DEBIT));
-        accountRepository.save(found1);
+        found1 = accountRepository.getOne(account.getId());
         
         Account found2 = accountRepository.getOne(account.getId());
         accountService.addMovements(account.getNumber(), new Movement(20.00F, Movement.Type.CREDIT));
-        accountRepository.save(found2);
+        found2 = accountRepository.getOne(account.getId());
 
         // then
         Assertions.assertThat(account.getBalance()).isEqualTo(10.00F);
