@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Movement {
-    
+
     
     public enum Type { CANCELED , CREDIT , DEBIT };
     

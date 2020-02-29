@@ -5,6 +5,8 @@
  */
 package com.bank.acelera.service;
 
+import com.bank.acelera.controller.transaction.converter.MovementConverter;
+import com.bank.acelera.controller.transaction.request.MovementRequest;
 import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.repository.AccountRepository;
@@ -24,6 +26,9 @@ public class AccountService {
     
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    MovementConverter movementConverter;
     
     /**
      * find by number
@@ -68,7 +73,17 @@ public class AccountService {
         }
         return false;
     }
-    
+
+    /**
+     *
+     * @param movementRequest
+     * @return
+     */
+    public boolean addMovement(MovementRequest movementRequest) {
+        Movement movement = movementConverter.movementConverter(movementRequest);
+        return this.addMovement(movementRequest.getAccountNumber(), movement);
+    }
+
     /**
      * Allowed movement
      * 
