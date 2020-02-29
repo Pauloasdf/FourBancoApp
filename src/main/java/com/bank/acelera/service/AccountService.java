@@ -50,7 +50,7 @@ public class AccountService {
      * @param movement
      * @return
      */
-    public boolean addMovements(long number, Movement movement) {
+    public boolean addMovement(long number, Movement movement) {
         Account account = this.findByNumber(number);
         
         if(account != null && this.allowedMovement(account, movement)) {

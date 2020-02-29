@@ -99,7 +99,7 @@ public class Account {
      */
     public boolean close(String password) {
         if(this.checkPassword(password)){
-            this.closeDate = closeDate;
+            this.closeDate = new Date();
         }
         return this.closeDate != null;
     }
