@@ -5,7 +5,6 @@ import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Person;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import com.bank.acelera.repository.MovementRepository;
 import com.bank.acelera.service.MovementService;
 import java.util.Date;
@@ -17,9 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class MovementTests {
 
     @InjectMocks
@@ -96,8 +95,6 @@ class MovementTests {
                 .findByDateBetween(initialDate, finalDate))
                 .thenReturn(movements);
 
-        System.out.println(initialDate.getTime());
-        System.out.println(finalDate.getTime());
         List<Movement> resultMoviments = movementService
                 .findBetween(
                         11111112L,
