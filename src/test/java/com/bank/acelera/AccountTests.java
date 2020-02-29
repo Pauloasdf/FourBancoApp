@@ -13,7 +13,6 @@ import javax.validation.ValidatorFactory;
 
 import com.bank.acelera.service.AccountService;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

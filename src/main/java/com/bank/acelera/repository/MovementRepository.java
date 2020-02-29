@@ -7,6 +7,8 @@
 package com.bank.acelera.repository;
 
 import com.bank.acelera.model.Movement;
+import java.util.Date;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +19,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MovementRepository  extends JpaRepository<Movement, Integer> {
     
+    public List<Movement> findByDateBetween(Date start, Date end);
 }
