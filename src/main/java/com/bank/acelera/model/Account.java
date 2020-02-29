@@ -60,7 +60,7 @@ public class Account {
     
     public int getId() {
         return id;
-    }
+    } 
     
     public long getNumber() {
         return number;
@@ -83,40 +83,12 @@ public class Account {
     }
     
     /**
-     * Validate password
-     * 
-     * @param password
-     * @return 
-     */
-    private boolean validatePassword(String password) {      
-        return !password.isBlank() && password.length() == 8;
-    }
-    
-    /**
-     * If the account is closed
+     * If the account it's opened
      * 
      * @return 
      */
-    public boolean isClosed(){
-        return this.closeDate != null;
-    }
-    
-    /**
-     * Open Account
-     * 
-     * @param number
-     * @param password
-     * @param person 
-     */
-    public void open(Long number,String password,Person person) {
-        if(this.validatePassword(password)){
-            this.openDate = new Date();
-            this.person = person;
-            this.number = number;
-            this.password = this.encrypt(password);
-        } else {
-            throw new IllegalArgumentException("Invalid password");
-        }
+    public boolean isOpened(){
+        return this.closeDate == null;
     }
     
     /**
@@ -133,6 +105,34 @@ public class Account {
     }
     
     /**
+     * Open Account
+     * 
+     * @param number
+     * @param password
+     * @param person 
+     */
+    public void open(Long number,String password,Person person) {
+        if(!this.validPassword(password)){
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        this.password = this.encrypt(password);
+        this.openDate = new Date();
+        this.person = person;
+        this.number = number;
+    }
+    
+    /**
+     * valid password
+     * 
+     * @param password
+     * @return 
+     */
+    private boolean validPassword(String password) {      
+        return !password.isBlank() && password.length() == 8;
+    }
+        
+    /**
      * Check password
      * 
      * @param password
@@ -143,21 +143,18 @@ public class Account {
     }
     
     /**
-     * Add movement
+     * Allowed movement
      * 
-     * @param movement
+     * @param Moviment
      * @return 
      */
-    public boolean addMovements(String password, Movement movement) {
-        if(this.checkPassword(password)){
-            if(this.movements == null){
-                this.movements = new ArrayList<Movement>();
-            }
-            movement.setAccount(this);
-
-            if(this.movements.add(movement)){
-                this.calculateTheBalance(movement);
-                return true;
+    public boolean allowedMovement(Movement movement){
+        if(this.isOpened()){
+            switch(movement.getType()){
+                case CREDIT:
+                    return true;
+                case DEBIT:
+                    return this.balance > movement.getValue();
             }
         }
         return false;
@@ -168,14 +165,18 @@ public class Account {
      * 
      * @param movement 
      */
-    private void calculateTheBalance(Movement movement){
-        switch(movement.getType()){
-            case CREDIT:
-                this.balance = this.balance + movement.getValue();
-               break;
-            case DEBIT:
-                this.balance = this.balance - movement.getValue();
-                break;
+    public void calculateTheBalance(Movement movement){
+        if(this.isOpened()){
+            switch(movement.getType()){
+                case CREDIT:
+                    this.balance = this.balance + movement.getValue();
+                   break;
+                case DEBIT:
+                    this.balance = this.balance - movement.getValue();
+                    break;
+            }
+        } else {
+            throw new IllegalArgumentException("Closed account");
         }
     }
    
