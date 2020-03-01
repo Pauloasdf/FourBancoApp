@@ -1,32 +1,30 @@
-package com.bank.acelera.controller.transaction;
+package com.bank.acelera.controller;
 
-import com.bank.acelera.controller.transaction.request.MovementRequest;
+import com.bank.acelera.controller.request.MovementRequest;
+import com.bank.acelera.controller.response.MovementResponse;
 import com.bank.acelera.model.Account;
-import com.bank.acelera.model.Movement;
 import com.bank.acelera.repository.AccountRepository;
 import com.bank.acelera.service.AccountService;
-import com.bank.acelera.service.MovementService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/transaction")
-public class TransactionsController {
+public class MovementController {
 
     private AccountService accountService;
 
     private AccountRepository accountRepository;
 
-    public TransactionsController(AccountService accountService) {
+    public MovementController(AccountService accountService) {
         this.accountService = accountService;
     }
 
     @PostMapping
-    public ResponseEntity createNewTransaction(@RequestBody MovementRequest movementRequest){
+    public ResponseEntity createNewMovement(@RequestBody MovementRequest movementRequest){
 
         if(accountService.addMovement(movementRequest)){
             return ResponseEntity.status(HttpStatus.OK).body("Realizada com sucesso");
@@ -36,11 +34,11 @@ public class TransactionsController {
     }
 
     @GetMapping(path = "/{accountNumber}")
-    public ResponseEntity getTransaction(@PathVariable Long accountNumber){
-        Account account =  accountService.findByNumber(accountNumber);
+    public ResponseEntity getMovements(@PathVariable Long accountNumber){
+        List<MovementResponse> movementResponses =  accountService.getMovements(accountNumber);
 
-        if (!account.equals(null)){
-            return ResponseEntity.status(HttpStatus.OK).body(account.getMovements());
+        if (!movementResponses.equals(null)){
+            return ResponseEntity.status(HttpStatus.OK).body(movementResponses);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
