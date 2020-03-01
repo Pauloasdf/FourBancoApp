@@ -48,6 +48,19 @@ class AccountTests {
             this.physical = physicalRepository.findByName("João alfredo");
         }
     }
+    
+//    @Test //TODO
+//    public void whenNullPasswordAndPerson_then() {
+//        // given
+//        Account account = new Account();
+//        account.open(111111L, "", this.physical);
+//        
+//        // when
+//        Set<ConstraintViolation<Account>> violations = validator.validate(account);
+//                
+//        // then
+//        Assertions.assertThat(violations.size()).isEqualTo(2);
+//    }
 
     @Test
     public void whenNullPasswordAndPerson_thenTwoConstraintViolations() {
@@ -56,7 +69,7 @@ class AccountTests {
 
         // when
         Set<ConstraintViolation<Account>> violations = validator.validate(account);
-
+        
         // then
         Assertions.assertThat(violations.size()).isEqualTo(2);
     }

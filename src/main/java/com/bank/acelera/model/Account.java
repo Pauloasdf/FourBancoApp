@@ -54,7 +54,7 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Movement> movements;
     
-    @NotNull
+    @NotNull()
     @ManyToOne
     @JoinColumn(name="person_id", nullable = false)
     private Person person;
@@ -130,7 +130,7 @@ public class Account {
      * @return 
      */
     private boolean validPassword(String password) {      
-        return !password.isEmpty() || password ==  null  && password.length() == 8;
+        return password != null && !password.isEmpty() && password.length() == 8;
     }
         
     /**
