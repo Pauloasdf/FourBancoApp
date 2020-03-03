@@ -89,7 +89,7 @@ public class Account {
      * @return 
      */
     public boolean isOpened(){
-        return this.closeDate == null;
+        return this.openDate != null && this.closeDate == null;
     }
     
     /**
