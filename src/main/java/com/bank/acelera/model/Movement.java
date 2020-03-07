@@ -24,7 +24,7 @@ public class Movement {
     public enum Type { CANCELED , CREDIT , DEBIT };
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     private Date date;
