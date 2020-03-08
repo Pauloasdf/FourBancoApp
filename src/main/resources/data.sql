@@ -1,6 +1,6 @@
-INSERT INTO `person` (`dtype`, `id`, `name`, `cnpj`, `cpf`) VALUES ('Physical', 1, 'Pedro alfredo', NULL, '123.123.123-53');
+INSERT INTO `person` (`dtype`, `id`, `name`, `cnpj`, `cpf`) VALUES ('Physical', 1, 'Pedro alfredo', NULL, '321.123.123-53');
 
-INSERT INTO `account` (`id`, `balance`, `close_date`, `number`, `open_date`, `password`, `person_id`) VALUES (1, 0, NULL, 11111113, '2020-02-01 22:08:54', '472c782e2ea863cf9c98efe3984f908a', 1);
+INSERT INTO `account` (`id`, `balance`, `close_date`, `number`, `open_date`, `password`, `person_id`) VALUES (1, 0, NULL, 22222223, '2020-02-01 22:08:54', '472c782e2ea863cf9c98efe3984f908a', 1);
 
 INSERT INTO `movement` (`date`, `type`, `value`, `account_id`) VALUES ('2020-02-01 22:08:54', 1, 10, 1);
 INSERT INTO `movement` (`date`, `type`, `value`, `account_id`) VALUES ('2020-02-02 22:08:54', 2, 5, 1);

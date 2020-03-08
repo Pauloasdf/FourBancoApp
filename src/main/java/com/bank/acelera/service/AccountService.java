@@ -15,6 +15,7 @@ import com.bank.acelera.repository.AccountRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,15 @@ public class AccountService {
      * @param number
      * @return 
      */
-    public Account findByNumber(long number){
-        return accountRepository.findByNumber(number);
+    public Account findByNumber(long number) throws IllegalArgumentException {
+        
+        Optional<Account> found = accountRepository.findByNumber(number);
+        
+        if(found.isEmpty()) {
+            throw new IllegalArgumentException("Account not found");
+        }
+        
+        return found.get();
     }
     
     /**
@@ -60,10 +68,10 @@ public class AccountService {
      * @param movement
      * @return
      */
-    public boolean addMovement(long number, Movement movement) {
+    public boolean addMovement(long number, Movement movement) throws IllegalArgumentException {
         Account account = this.findByNumber(number);
         
-        if(account != null && this.allowedMovement(account, movement)) {
+        if(this.allowedMovement(account, movement)) {
             
             movement.setDate(new Date());
             movement.setAccount(account);
@@ -108,7 +116,7 @@ public class AccountService {
         return false;
     }
     
-        /**
+    /**
      * Calculate the balance
      * 
      * @param movement 
@@ -134,7 +142,7 @@ public class AccountService {
      * @param accountNumber
      * @return
      */
-    public List<MovementResponse> getMovements(Long accountNumber) {
+    public List<MovementResponse> getMovements(Long accountNumber) throws IllegalArgumentException {
         Account account = this.findByNumber(accountNumber);
         return movementConverter.converterList(account.getMovements());
     }

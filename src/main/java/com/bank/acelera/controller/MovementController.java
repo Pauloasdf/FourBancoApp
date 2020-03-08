@@ -35,12 +35,17 @@ public class MovementController {
 
     @GetMapping(path = "/{accountNumber}")
     public ResponseEntity getMovements(@PathVariable Long accountNumber){
-        List<MovementResponse> movementResponses =  accountService.getMovements(accountNumber);
-
-        if (!movementResponses.equals(null)){
-            return ResponseEntity.status(HttpStatus.OK).body(movementResponses);
+        
+        try {
+         
+            List<MovementResponse> movementResponses =  accountService.getMovements(accountNumber);
+            if (!movementResponses.equals(null)){
+               return ResponseEntity.status(HttpStatus.OK).body(movementResponses);
+            }
+         
+        } catch (Exception e) {
         }
-
+        
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
