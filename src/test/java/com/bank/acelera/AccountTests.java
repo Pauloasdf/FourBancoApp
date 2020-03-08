@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.bank.acelera.repository.PhysicalRepository;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 @SpringBootTest
 class AccountTests {
@@ -29,7 +31,7 @@ class AccountTests {
 
     @Autowired
     private AccountService accountService;
-
+    
     private Validator validator;
 
     private Physical physical;
@@ -49,18 +51,18 @@ class AccountTests {
         }
     }
     
-//    @Test //TODO
-//    public void whenNullPasswordAndPerson_then() {
-//        // given
-//        Account account = new Account();
-//        account.open(111111L, "", this.physical);
-//        
-//        // when
-//        Set<ConstraintViolation<Account>> violations = validator.validate(account);
-//                
-//        // then
-//        Assertions.assertThat(violations.size()).isEqualTo(2);
-//    }
+    @Test
+    public void whenNullPasswordAndPerson_thenIllegalArgumentException() {
+        Assertions.assertThatThrownBy(() -> {
+            
+            // when
+            Account account = new Account();
+            account.open(111111L, "", this.physical);
+            
+        // then
+        }).isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("Invalid password");
+    }
 
     @Test
     public void whenNullPasswordAndPerson_thenTwoConstraintViolations() {
