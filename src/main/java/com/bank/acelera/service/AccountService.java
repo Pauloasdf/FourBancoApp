@@ -93,7 +93,7 @@ public class AccountService {
      * @param movementRequest
      * @return
      */
-    public boolean addMovement(MovementRequest movementRequest) {
+    public boolean addMovement(MovementRequest movementRequest) throws IllegalArgumentException {
         Movement movement = movementConverter.movementConverter(movementRequest);
         return this.addMovement(movementRequest.getAccountNumber(), movement);
     }

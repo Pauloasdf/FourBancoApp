@@ -8,6 +8,7 @@ package com.bank.acelera;
 import com.bank.acelera.service.AccountService;
 import com.bank.acelera.controller.MovementController;
 import com.bank.acelera.controller.request.MovementRequest;
+import com.bank.acelera.model.Movement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import org.hamcrest.Matchers;
@@ -55,6 +56,41 @@ public class MovementControllerTest {
                 .andExpect(jsonPath("$", Matchers.hasSize(11)))
                 .andExpect(jsonPath("$[0].value", Matchers.is(10.0)));
     }
+    
+    @Test
+    void whenTheTypeIsNotValid_thenStatus400() throws Exception {
+
+        MovementRequest movementRequest = new MovementRequest();
+        movementRequest.setAccountNumber(22222223L);
+        movementRequest.setType(4);
+        movementRequest.setValue(10.0F);
+
+        byte[] movementJson = toJson(movementRequest);
+
+        mvc.perform(
+                post("/transaction")
+                .content(movementJson)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest())
+         .andExpect(content().string(Movement.TYPE_NOT_VALID));
+    }
+    
+    @Test
+    void whenNullValue_thenStatus400() throws Exception {
+
+        MovementRequest movementRequest = new MovementRequest();
+        movementRequest.setAccountNumber(22222223L);
+        movementRequest.setType(2);
+
+        byte[] movementJson = toJson(movementRequest);
+
+        mvc.perform(
+                post("/transaction")
+                .content(movementJson)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest())
+         .andExpect(content().string(Movement.VALUE_NOT_NUMBER));
+    }
 
     @Test
     void apiCreateNewMovement() throws Exception {
@@ -63,7 +99,7 @@ public class MovementControllerTest {
         movementRequest.setAccountNumber(22222223L);
         movementRequest.setType(2);
         movementRequest.setValue(10.0F);
-        
+
         byte[] movementJson = toJson(movementRequest);
 
         mvc.perform(

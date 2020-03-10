@@ -20,9 +20,12 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Movement {
 
+    public static String VALUE_NOT_NUMBER = "Value is not a number";
+    
+    public static String TYPE_NOT_VALID = "Type must be a valid type";
     
     public enum Type { CANCELED , CREDIT , DEBIT };
-    
+        
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

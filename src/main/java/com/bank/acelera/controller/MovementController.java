@@ -20,9 +20,16 @@ public class MovementController {
     @PostMapping
     public ResponseEntity createNewMovement(@RequestBody MovementRequest movementRequest){
 
-        if(accountService.addMovement(movementRequest)){
-            return ResponseEntity.status(HttpStatus.CREATED).body("Realizada com sucesso");
+        try {
+            if(accountService.addMovement(movementRequest)){
+                return ResponseEntity.status(HttpStatus.CREATED).body("Realizada com sucesso");
+            }
+        } catch (Exception e) {
+            if(e instanceof IllegalArgumentException){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            }
         }
+        
 
         return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
     }

@@ -12,12 +12,19 @@ import java.util.List;
 public class MovementConverter {
 
     public Movement movementConverter(MovementRequest movementRequest) {
-        Movement movement = new Movement(
-                movementRequest.getValue(),
-                this.getType(movementRequest.getType())
-        );
-
-        return movement;
+        
+        if(movementRequest.getValue() == null){
+            throw new IllegalArgumentException(Movement.VALUE_NOT_NUMBER);
+        }
+        
+        if(movementRequest.getType() < 1 || movementRequest.getType() > 2){
+            throw new IllegalArgumentException(Movement.TYPE_NOT_VALID);
+        }
+        
+        return new Movement(
+                    movementRequest.getValue(),
+                    this.getType(movementRequest.getType())
+                );
 
     }
 
