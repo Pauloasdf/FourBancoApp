@@ -24,41 +24,51 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MovementService {
-    
+
     @Autowired
     MovementRepository movementRepository;
+
     @Autowired
     MovementConverter movementConverter;
+
     @Autowired
     AccountService accountService;
 
     /**
-     * Add movement
-     * 
+     * Save movement
+     *
      * @param movement
-     * @return 
+     * @return
      */
     public Movement save(Movement movement) {
-        if(movement.getAccount() == null){
+        if (movement.getAccount() == null) {
             throw new IllegalArgumentException("Account cannot be null");
         }
-        
+
         return movementRepository.save(movement);
     }
-    
-    public List<Movement> findBetween(Long numberAccount, Date start, Date end){
-        List<Movement> movements = movementRepository.findByAccountNumberAndDateBetween(numberAccount,start, end);
+
+    /**
+     * Find by account number and between dates
+     *
+     * @param numberAccount
+     * @param start
+     * @param end
+     * @return
+     */
+    public List<Movement> findBetween(Long numberAccount, Date start, Date end) {
+        List<Movement> movements = movementRepository.findByAccountNumberAndDateBetween(numberAccount, start, end);
         return movements;
     }
 
     /**
-     * Returns the account movements
+     * Returns movements of an account
      *
      * @param accountNumber
      * @return
      */
-    public List<MovementResponse> getMovements(Long accountNumber) throws IllegalArgumentException {
-        Optional<List<Movement>> movementList = this.movementRepository.findByAccountNumber(accountNumber);
+    public List<MovementResponse> getMovements(Long accountNumber) {
+        Optional<List<Movement>> movementList = movementRepository.findByAccountNumber(accountNumber);
         return movementConverter.converterList(movementList.get());
     }
 
@@ -71,6 +81,7 @@ public class MovementService {
         Movement movement = movementConverter.movementConverter(movementRequest);
         return this.addMovement(movementRequest.getAccountNumber(), movement);
     }
+
     /**
      * Add movement
      *
@@ -80,7 +91,7 @@ public class MovementService {
     public boolean addMovement(long number, Movement movement) throws IllegalArgumentException {
         Account account = accountService.findByNumber(number);
 
-        if(accountService.allowedMovement(account, movement)) {
+        if (accountService.allowedMovement(account, movement)) {
 
             movement.setDate(new Date());
             movement.setAccount(account);

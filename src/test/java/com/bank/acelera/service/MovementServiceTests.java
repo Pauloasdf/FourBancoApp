@@ -44,23 +44,16 @@ public class MovementServiceTests {
         accountRepository.save(account);
 
         // when
-        movementService.addMovement(account.getNumber(), new Movement(10.00F, Movement.Type.CREDIT));
         float balance0 = account.getBalance();
+        movementService.addMovement(account.getNumber(), new Movement(10.00F, Movement.Type.CREDIT));
+        
+        float balance10 = accountRepository.getOne(account.getId()).getBalance();
 
-        account = accountRepository.getOne(account.getId());
-        float balance10 = account.getBalance();
+        movementService.addMovement(account.getNumber(), new Movement(3.00F, Movement.Type.DEBIT));
+        float balance7 = accountRepository.getOne(account.getId()).getBalance();
 
-        Account found1 = accountRepository.getOne(account.getId());
-
-        movementService.addMovement(found1.getNumber(), new Movement(3.00F, Movement.Type.DEBIT));
-        found1 = accountRepository.getOne(found1.getId());
-        float balance7 = found1.getBalance();
-
-        Account found2 = accountRepository.getOne(account.getId());
-
-        movementService.addMovement(found2.getNumber(), new Movement(20.00F, Movement.Type.CREDIT));
-        found2 = accountRepository.getOne(found2.getId());
-        float balance25 = found2.getBalance();
+        movementService.addMovement(account.getNumber(), new Movement(20.00F, Movement.Type.CREDIT));
+        float balance25 = accountRepository.getOne(account.getId()).getBalance();
 
         // then
         Assertions.assertThat(balance0).isEqualTo(0.00F);

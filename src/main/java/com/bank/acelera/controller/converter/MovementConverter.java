@@ -11,20 +11,20 @@ import java.util.List;
 @Component
 public class MovementConverter {
 
-    public Movement movementConverter(MovementRequest movementRequest) {
-        
-        if(movementRequest.getValue() == null){
+    public Movement movementConverter(MovementRequest movementRequest) throws IllegalArgumentException {
+
+        if (movementRequest.getValue() == null) {
             throw new IllegalArgumentException(Movement.VALUE_NOT_NUMBER);
         }
-        
-        if(movementRequest.getType() < 1 || movementRequest.getType() > 2){
+
+        if (movementRequest.getType() < 1 || movementRequest.getType() > 2) {
             throw new IllegalArgumentException(Movement.TYPE_NOT_VALID);
         }
-        
+
         return new Movement(
-                    movementRequest.getValue(),
-                    this.getType(movementRequest.getType())
-                );
+                movementRequest.getValue(),
+                this.getType(movementRequest.getType())
+        );
 
     }
 
@@ -34,7 +34,7 @@ public class MovementConverter {
      * @param type
      * @return
      */
-    private Movement.Type getType(Integer type){
+    private Movement.Type getType(Integer type) {
         return Movement.Type.values()[type];
     }
 
@@ -47,8 +47,8 @@ public class MovementConverter {
     public List<MovementResponse> converterList(List<Movement> movements) {
         List<MovementResponse> movementResponses = new ArrayList<>();
 
-        for (Movement movement:
-             movements) {
+        for (Movement movement
+                : movements) {
             MovementResponse movementResponse = new MovementResponse();
             movementResponse.setData(movement.getDate());
             movementResponse.setType(movement.getType().ordinal());
