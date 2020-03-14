@@ -1,14 +1,13 @@
-package com.bank.acelera;
+package com.bank.acelera.repository;
 
 import com.bank.acelera.model.Physical;
-import com.bank.acelera.repository.PhysicalRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PhysicalTests {
+public class PersonRepositoryTests {
  
     @Autowired
     private PhysicalRepository personRepository;

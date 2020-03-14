@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
@@ -92,7 +91,7 @@ class MovementTests {
         finalDate.setDate(finalDate.getDate() - 2);
 
         when(movementRepository
-                .findByAccountNumberAndDateBetween(11111112L,initialDate, finalDate))
+                .findByAccountNumberAndDateBetween(11111112L, initialDate, finalDate))
                 .thenReturn(movements);
 
         List<Movement> resultMoviments = movementService

@@ -1,37 +1,25 @@
-package com.bank.acelera;
+package com.bank.acelera.model;
 
 import com.bank.acelera.model.Account;
-import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
-import com.bank.acelera.repository.AccountRepository;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import com.bank.acelera.service.AccountService;
-import com.bank.acelera.service.MovementService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.bank.acelera.repository.PhysicalRepository;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 
 @SpringBootTest
-class AccountTests {
-
-    @Autowired
-    private AccountRepository accountRepository;
+public class AccountTests {
 
     @Autowired
     private PhysicalRepository physicalRepository;
-
-    @Autowired
-    private AccountService accountService;
 
     private Validator validator;
 
@@ -51,18 +39,18 @@ class AccountTests {
             this.physical = physicalRepository.findByName("João alfredo");
         }
     }
-    
+
     @Test
     public void whenNullPasswordAndPerson_thenIllegalArgumentException() {
         Assertions.assertThatThrownBy(() -> {
-            
+
             // when
             Account account = new Account();
             account.open(111111L, "", this.physical);
-            
-        // then
+
+            // then
         }).isInstanceOf(IllegalArgumentException.class)
-          .hasMessageContaining("Invalid password");
+                .hasMessageContaining("Invalid password");
     }
 
     @Test
@@ -72,7 +60,7 @@ class AccountTests {
 
         // when
         Set<ConstraintViolation<Account>> violations = validator.validate(account);
-        
+
         // then
         Assertions.assertThat(violations.size()).isEqualTo(2);
     }
@@ -89,53 +77,5 @@ class AccountTests {
         // then
         Assertions.assertThat(violations.size()).isEqualTo(1);
     }
-
-    @Test
-    public void whenFindById_thenOpenDateNotNull() {
-        // given
-        Account account = new Account();
-        account.open(11111112L, "PasSwOrd", this.physical);
-        accountRepository.save(account);
-
-        // when
-        Account found = accountRepository.findById(account.getId()).get();
-
-        // then
-        Assertions.assertThat(found.getOpenDate())
-                .isNotNull();
-    }
-    
-    @Test
-    public void whenAddingAMovementToAClosedAccount_thenDoesNotAllowOperation() {
-        // 
-        String password = "PasSwOrd";
-
-        Account account = new Account();
-        account.open(11111113L, password, physical);
-                
-        // given
-        account.close(password);
-
-        // when
-        boolean allowed = accountService.allowedMovement(account, new Movement(10.00F, Movement.Type.CREDIT));
-
-        // then
-        Assertions.assertThat(allowed).isFalse();
-    }
-    
-    @Test
-    public void whenAddingAMovementNoAccountBalance_thenDoesNotAllowOperation() {
-       // given
-        String password = "PasSwOrd";
-        Account account = new Account();
-        account.open(11111113L, password, physical);
-
-        // when
-        boolean allowed = accountService.allowedMovement(account, new Movement(10.00F, Movement.Type.DEBIT));
-
-        // then
-        Assertions.assertThat(allowed).isFalse();
-    }
-    
 
 }

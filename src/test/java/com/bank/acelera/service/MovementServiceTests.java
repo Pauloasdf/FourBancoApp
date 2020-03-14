@@ -9,16 +9,18 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class MovementServiceTests {
+
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private PhysicalRepository physicalRepository;
     @Autowired
-    private AccountService accountService;
-    @Autowired
     private MovementService movementService;
+
     @BeforeEach
     public void setUp() {
         if (physicalRepository.findByName("João alfredo") == null) {
@@ -31,6 +33,7 @@ public class MovementServiceTests {
         }
     }
     private Physical physical;
+
     @Test
     public void whenAddingMovements_thenTheBalanceMustBeUpdated() {
         // given
@@ -49,9 +52,9 @@ public class MovementServiceTests {
 
         Account found1 = accountRepository.getOne(account.getId());
 
-        movementService.addMovement(found1.getNumber(), new Movement(5.00F, Movement.Type.DEBIT));
+        movementService.addMovement(found1.getNumber(), new Movement(3.00F, Movement.Type.DEBIT));
         found1 = accountRepository.getOne(found1.getId());
-        float balance5 = found1.getBalance();
+        float balance7 = found1.getBalance();
 
         Account found2 = accountRepository.getOne(account.getId());
 
@@ -62,7 +65,7 @@ public class MovementServiceTests {
         // then
         Assertions.assertThat(balance0).isEqualTo(0.00F);
         Assertions.assertThat(balance10).isEqualTo(10.00F);
-        Assertions.assertThat(balance5).isEqualTo(5.00F);
-        Assertions.assertThat(balance25).isEqualTo(25.00F);
+        Assertions.assertThat(balance7).isEqualTo(7.00F);
+        Assertions.assertThat(balance25).isEqualTo(27.00F);
     }
 }
