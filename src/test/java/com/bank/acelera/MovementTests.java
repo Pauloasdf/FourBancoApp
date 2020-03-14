@@ -92,7 +92,7 @@ class MovementTests {
         finalDate.setDate(finalDate.getDate() - 2);
 
         when(movementRepository
-                .findByDateBetween(initialDate, finalDate))
+                .findByAccountNumberAndDateBetween(11111112L,initialDate, finalDate))
                 .thenReturn(movements);
 
         List<Movement> resultMoviments = movementService

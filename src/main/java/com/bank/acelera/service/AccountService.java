@@ -5,16 +5,10 @@
  */
 package com.bank.acelera.service;
 
-import com.bank.acelera.controller.converter.MovementConverter;
-import com.bank.acelera.controller.request.MovementRequest;
-import com.bank.acelera.controller.response.MovementResponse;
 import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.repository.AccountRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +27,6 @@ public class AccountService {
     @Autowired
     AccountRepository accountRepository;
 
-    @Autowired
-    MovementConverter movementConverter;
-    
     /**
      * find by number
      * 
@@ -61,43 +52,6 @@ public class AccountService {
     public Account save(Account account) {
         return accountRepository.save(account);
     }
-    
-    /**
-     * Add movement
-     * 
-     * @param movement
-     * @return
-     */
-    public boolean addMovement(long number, Movement movement) throws IllegalArgumentException {
-        Account account = this.findByNumber(number);
-        
-        if(this.allowedMovement(account, movement)) {
-            
-            movement.setDate(new Date());
-            movement.setAccount(account);
-            
-            try {
-                movement = movementService.save(movement);
-                this.calculateTheBalance(account, movement);
-                this.save(account);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }            
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param movementRequest
-     * @return
-     */
-    public boolean addMovement(MovementRequest movementRequest) throws IllegalArgumentException {
-        Movement movement = movementConverter.movementConverter(movementRequest);
-        return this.addMovement(movementRequest.getAccountNumber(), movement);
-    }
-
     /**
      * Allowed movement
      * 
@@ -134,16 +88,5 @@ public class AccountService {
         } else {
             throw new IllegalArgumentException("Closed account");
         }
-    }
-
-    /**
-     * Returns the account movements
-     *
-     * @param accountNumber
-     * @return
-     */
-    public List<MovementResponse> getMovements(Long accountNumber) throws IllegalArgumentException {
-        Account account = this.findByNumber(accountNumber);
-        return movementConverter.converterList(account.getMovements());
     }
 }
