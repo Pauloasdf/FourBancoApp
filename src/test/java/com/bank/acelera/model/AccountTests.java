@@ -41,16 +41,31 @@ public class AccountTests {
     }
 
     @Test
-    public void whenNullPasswordAndPerson_thenIllegalArgumentException() {
+    public void whenNullPassword_thenIllegalArgumentException() {
         Assertions.assertThatThrownBy(() -> {
-
-            // when
+            // give
             Account account = new Account();
+            
+            // when
+            account.open(111111L, null, this.physical);
+
+            // then
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(Account.INVALID_PASSWORD);
+    }
+    
+    @Test
+    public void whenEmptyPassword_thenIllegalArgumentException() {
+        Assertions.assertThatThrownBy(() -> {
+            // give
+            Account account = new Account();
+
+            // when            
             account.open(111111L, "", this.physical);
 
             // then
         }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid password");
+                .hasMessageContaining(Account.INVALID_PASSWORD);
     }
 
     @Test
@@ -76,6 +91,24 @@ public class AccountTests {
 
         // then
         Assertions.assertThat(violations.size()).isEqualTo(1);
+    }
+    
+    @Test
+    public void whenTwoCallsToTheCloseMethod_thenInvalidateOperation() {
+                
+         Assertions.assertThatThrownBy(() -> {
+             
+             // give
+            Account account = new Account();
+            account.open(111111L, "PasSwOrd", this.physical);
+
+            // when
+            account.close("PasSwOrd");
+            account.close("PasSwOrd");
+
+            // then
+        }).isInstanceOf(UnsupportedOperationException.class)
+                .hasMessageContaining(Account.ACCOUNT_CLOSED);
     }
 
 }

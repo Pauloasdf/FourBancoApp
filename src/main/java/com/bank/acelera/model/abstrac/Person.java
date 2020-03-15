@@ -24,14 +24,14 @@ public abstract class Person {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     
     private String name;
     
     @OneToMany(mappedBy = "person")
     private List<Account> accounts;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

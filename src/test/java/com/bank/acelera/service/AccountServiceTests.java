@@ -42,9 +42,18 @@ public class AccountServiceTests {
             this.physical = physicalRepository.findByName("João alfredo");
         }
     }
+    
+    @Test
+    public void whenOpenAccount_thenSuccess(){
+        // give
+        Account account = accountService.open(1L,"PasSwOrd");
+                
+        // then
+        Assertions.assertThat(account).isNotNull();
+    }
 
     @Test
-    public void whenAddingAMovementToAClosedAccount_thenDoesNotAllowOperation() {
+    public void whenAddingAMovementToAClosedAccount_thenDoesNotAllowOperation() throws UnsupportedOperationException {
         // given 
         String password = "PasSwOrd";
         Account account = new Account();

@@ -9,7 +9,6 @@ import com.bank.acelera.model.abstrac.Person;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,10 +22,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,6 +32,10 @@ import javax.validation.constraints.Size;
  */
 @Entity
 public class Account {
+    
+    public static String INVALID_PASSWORD = "Invalid password";
+    
+    public static String ACCOUNT_CLOSED = "Account already closed|";
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,6 +86,24 @@ public class Account {
     }
     
     /**
+     * Open Account
+     * 
+     * @param number
+     * @param password
+     * @param person 
+     */
+    public void open(Long number,String password,Person person) {
+        if(!this.validPassword(password)){
+            throw new IllegalArgumentException(INVALID_PASSWORD);
+        }
+
+        this.password = this.encrypt(password);
+        this.openDate = new Date();
+        this.person = person;
+        this.number = number;
+    }
+    
+    /**
      * If the account it's opened
      * 
      * @return 
@@ -98,7 +118,12 @@ public class Account {
      * @param password
      * @return 
      */
-    public boolean close(String password) {
+    public boolean close(String password) throws UnsupportedOperationException {
+        // to avoid changes to the account closing date
+        if(!this.isOpened()){
+            throw new UnsupportedOperationException(ACCOUNT_CLOSED);
+        }
+        
         if(this.checkPassword(password)){
             this.closeDate = new Date();
         }
@@ -106,21 +131,19 @@ public class Account {
     }
     
     /**
-     * Open Account
-     * 
-     * @param number
-     * @param password
-     * @param person 
+     * Reduce balance
+     * @param valeu
      */
-    public void open(Long number,String password,Person person) {
-        if(!this.validPassword(password)){
-            throw new IllegalArgumentException("Invalid password");
-        }
-
-        this.password = this.encrypt(password);
-        this.openDate = new Date();
-        this.person = person;
-        this.number = number;
+    public void reduce(float value){
+        this.balance = this.balance - value;
+    }
+    
+    /**
+     * Increment balance
+     * @param value 
+     */
+    public void increment(float value){
+        this.balance = this.balance + value;
     }
     
     /**
@@ -141,22 +164,6 @@ public class Account {
      */
     private boolean checkPassword(String password){
         return this.password.equals(this.encrypt(password));
-    }
-    
-    /**
-     * Reduce value
-     * @param valeu
-     */
-    public void reduce(float value){
-        this.balance = this.balance - value;
-    }
-    
-    /**
-     * Increment value
-     * @param value 
-     */
-    public void increment(float value){
-        this.balance = this.balance + value;
     }
     
     /**

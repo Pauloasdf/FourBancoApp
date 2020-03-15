@@ -7,7 +7,9 @@ package com.bank.acelera.service;
 
 import com.bank.acelera.model.Account;
 import com.bank.acelera.model.Movement;
+import com.bank.acelera.model.abstrac.Person;
 import com.bank.acelera.repository.AccountRepository;
+import java.util.Calendar;
 
 import java.util.Optional;
 
@@ -22,10 +24,14 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     
     @Autowired
-    MovementService movementService;
+    private AccountRepository accountRepository;
+        
+    @Autowired
+    private AccountNumberService accountNumberService;
     
     @Autowired
-    AccountRepository accountRepository;
+    private PersonService personService;
+    
 
     /**
      * find by number
@@ -88,5 +94,30 @@ public class AccountService {
         } else {
             throw new IllegalArgumentException("Closed account");
         }
+    }
+
+    /**
+     * 
+     * @param personId
+     * @param pasSwOrd
+     * @return 
+     */
+    public Account open(long personId, String pasSwOrd) {
+        Person person = personService.findById(personId);
+        Account account = new Account();
+        account.open(this.genareteNumber(), pasSwOrd, person);
+        this.save(account);        
+        return account;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    private Long genareteNumber() {
+        Calendar cal = Calendar.getInstance();
+        Integer year = cal.get(Calendar.YEAR);
+        Long next = accountNumberService.nextNumber();
+        return Long.parseLong(year.toString() + String.format("%04d", next));
     }
 }
