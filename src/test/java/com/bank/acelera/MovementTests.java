@@ -1,6 +1,7 @@
 package com.bank.acelera;
 
-import com.bank.acelera.model.Account;
+import com.bank.acelera.model.CheckingAccount;
+import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
 import org.assertj.core.api.Assertions;
@@ -36,7 +37,7 @@ class MovementTests {
         person.setName("João alfredo");
         person.setCpf("123.123.123-53");
 
-        Account account = new Account();
+        Account account = new CheckingAccount();
         account.open(11111112L, "PasSwOrd", person);
 
         Movement movement1 = new Movement(50.00F, Movement.Type.CREDIT);

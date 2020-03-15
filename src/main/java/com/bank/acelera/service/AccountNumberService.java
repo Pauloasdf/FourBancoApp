@@ -7,6 +7,7 @@ package com.bank.acelera.service;
 
 import com.bank.acelera.model.AccountNumber;
 import com.bank.acelera.repository.AccountNumberRepository;
+import java.util.Calendar;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,9 +35,9 @@ class AccountNumberService {
      * 
      * @return 
      */
-    private AccountNumber newSeguence(){
+    private AccountNumber newAccountNumber(int type){
         AccountNumber number = new AccountNumber();
-        number.setId(1);
+        number.setId(type);
         number.setSeguence(0L);
         return this.save(number);
     }
@@ -45,20 +46,24 @@ class AccountNumberService {
      * 
      * @return 
      */
-    public Long nextNumber() {
-        AccountNumber number;
-        Optional<AccountNumber> op = accountNumberRepository.findById(1);
-        
-        if(op.isEmpty()){
-            number = newSeguence();
-        } else {
-            number = op.get();
-        }
-        
+    private Long nextNumber(int type) {
+        Optional<AccountNumber> op = accountNumberRepository.findById(type);
+        AccountNumber number = op.isEmpty() ? newAccountNumber(type) : op.get();
         number.incremente();
         this.save(number);
         return number.getSeguence();
     }
     
-    
+    /**
+     * Generate next number
+     * @param type
+     * @return 
+     */
+    public Long genareteNumber(int type){
+        Calendar cal = Calendar.getInstance();
+        Integer year = cal.get(Calendar.YEAR);
+        Long next = this.nextNumber(type);
+        
+        return Long.parseLong(year.toString()+ type + String.format("%04d", next));
+    }   
 }

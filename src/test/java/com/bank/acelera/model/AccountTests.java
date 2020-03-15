@@ -1,6 +1,6 @@
 package com.bank.acelera.model;
 
-import com.bank.acelera.model.Account;
+import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Physical;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -44,7 +44,7 @@ public class AccountTests {
     public void whenNullPassword_thenIllegalArgumentException() {
         Assertions.assertThatThrownBy(() -> {
             // give
-            Account account = new Account();
+            Account account = new CheckingAccount();
             
             // when
             account.open(111111L, null, this.physical);
@@ -58,7 +58,7 @@ public class AccountTests {
     public void whenEmptyPassword_thenIllegalArgumentException() {
         Assertions.assertThatThrownBy(() -> {
             // give
-            Account account = new Account();
+            Account account = new CheckingAccount();
 
             // when            
             account.open(111111L, "", this.physical);
@@ -71,7 +71,7 @@ public class AccountTests {
     @Test
     public void whenNullPasswordAndPerson_thenTwoConstraintViolations() {
         // given
-        Account account = new Account();
+        Account account = new CheckingAccount();
 
         // when
         Set<ConstraintViolation<Account>> violations = validator.validate(account);
@@ -83,7 +83,7 @@ public class AccountTests {
     @Test
     public void whenNullPerson_thenOneConstraintViolations() {
         // given
-        Account account = new Account();
+        Account account = new CheckingAccount();
         account.open(111111L, "PasSwOrd", null);
 
         // when
@@ -99,7 +99,7 @@ public class AccountTests {
          Assertions.assertThatThrownBy(() -> {
              
              // give
-            Account account = new Account();
+            Account account = new CheckingAccount();
             account.open(111111L, "PasSwOrd", this.physical);
 
             // when

@@ -5,7 +5,8 @@
  */
 package com.bank.acelera.repository;
 
-import com.bank.acelera.model.Account;
+import com.bank.acelera.model.CheckingAccount;
+import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Physical;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ public class AccountRepositoryTests {
     @Test
     public void whenFindById_thenOpenDateNotNull() {
         // given
-        Account account = new Account();
+        Account account = new CheckingAccount ();
         account.open(11111112L, "PasSwOrd", this.physical);
         accountRepository.save(account);
 

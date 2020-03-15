@@ -5,7 +5,6 @@
  */
 package com.bank.acelera.model.abstrac;
 
-import com.bank.acelera.model.Account;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

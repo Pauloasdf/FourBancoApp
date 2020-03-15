@@ -1,6 +1,7 @@
 package com.bank.acelera.service;
 
-import com.bank.acelera.model.Account;
+import com.bank.acelera.model.CheckingAccount;
+import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
 import com.bank.acelera.repository.AccountRepository;
@@ -16,10 +17,15 @@ public class MovementServiceTests {
 
     @Autowired
     private AccountRepository accountRepository;
+    
     @Autowired
     private PhysicalRepository physicalRepository;
+    
     @Autowired
     private MovementService movementService;
+    
+    @Autowired
+    private AccountNumberService accountNumberService;
 
     @BeforeEach
     public void setUp() {
@@ -39,26 +45,26 @@ public class MovementServiceTests {
         // given
         String password = "PasSwOrd";
 
-        Account account = new Account();
-        account.open(11111113L, password, physical);
+        Account account = new CheckingAccount();
+        account.open(accountNumberService.genareteNumber(2), password, physical);
         accountRepository.save(account);
 
         // when
         float balance0 = account.getBalance();
-        movementService.addMovement(account.getNumber(), new Movement(10.00F, Movement.Type.CREDIT));
         
+        movementService.addMovement(account.getNumber(), new Movement(10.00F, Movement.Type.CREDIT));
         float balance10 = accountRepository.getOne(account.getId()).getBalance();
 
         movementService.addMovement(account.getNumber(), new Movement(3.00F, Movement.Type.DEBIT));
         float balance7 = accountRepository.getOne(account.getId()).getBalance();
 
         movementService.addMovement(account.getNumber(), new Movement(20.00F, Movement.Type.CREDIT));
-        float balance25 = accountRepository.getOne(account.getId()).getBalance();
+        float balance27 = accountRepository.getOne(account.getId()).getBalance();
 
         // then
         Assertions.assertThat(balance0).isEqualTo(0.00F);
         Assertions.assertThat(balance10).isEqualTo(10.00F);
         Assertions.assertThat(balance7).isEqualTo(7.00F);
-        Assertions.assertThat(balance25).isEqualTo(27.00F);
+        Assertions.assertThat(balance27).isEqualTo(27.00F);
     }
 }

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bank.acelera.model;
+package com.bank.acelera.model.abstrac;
 
+import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.abstrac.Person;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -13,16 +14,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -31,12 +31,13 @@ import javax.validation.constraints.NotNull;
  * @author lauro
  */
 @Entity
-public class Account {
+@Inheritance
+public abstract class Account {
     
     public static String INVALID_PASSWORD = "Invalid password";
     
     public static String ACCOUNT_CLOSED = "Account already closed|";
-    
+        
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -53,7 +54,7 @@ public class Account {
     
     private float balance;
     
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account")
     private List<Movement> movements;
     
     @NotNull()
@@ -83,6 +84,10 @@ public class Account {
 
     public List<Movement> getMovements() {
         return movements;
+    }
+
+    public Person getPerson() {
+        return person;
     }
     
     /**

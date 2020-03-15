@@ -5,11 +5,12 @@
  */
 package com.bank.acelera.service;
 
-import com.bank.acelera.model.Account;
+import com.bank.acelera.model.CheckingAccount;
+import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
+import com.bank.acelera.model.SavingsAccount;
 import com.bank.acelera.model.abstrac.Person;
 import com.bank.acelera.repository.AccountRepository;
-import java.util.Calendar;
 
 import java.util.Optional;
 
@@ -22,6 +23,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccountService {
+    
+    private static int SEGUENCE_TYPE_SAVINGS_ACCOUNT = 1;
+    
+    private static int SEGUENCE_TYPE_CHECKING_ACCOUNT = 2;
     
     @Autowired
     private AccountRepository accountRepository;
@@ -95,29 +100,46 @@ public class AccountService {
             throw new IllegalArgumentException("Closed account");
         }
     }
+    
+    /**
+     * Open new savings account
+     * @param personId
+     * @param pasSwOrd
+     * @return 
+     */
+    public Account openSavingsAccount(long personId, String pasSwOrd){
+        return this.open(personId, pasSwOrd,this.genareteNumber(SEGUENCE_TYPE_SAVINGS_ACCOUNT), new SavingsAccount());
+    }
 
+    /**
+     * Open new checking account
+     * @param personId
+     * @param pasSwOrd
+     * @return 
+     */
+    public Account openCheckingAccount(long personId, String pasSwOrd){
+        return this.open(personId, pasSwOrd,this.genareteNumber(SEGUENCE_TYPE_CHECKING_ACCOUNT), new CheckingAccount());
+    }
+    
     /**
      * 
      * @param personId
      * @param pasSwOrd
      * @return 
      */
-    public Account open(long personId, String pasSwOrd) {
+    private Account open(long personId, String pasSwOrd, long number, Account account) {
         Person person = personService.findById(personId);
-        Account account = new Account();
-        account.open(this.genareteNumber(), pasSwOrd, person);
-        this.save(account);        
+        account.open(number, pasSwOrd, person);
+        this.save(account);
         return account;
     }
 
     /**
-     * 
+     * Generate next account number by type 
+     * @param type
      * @return 
      */
-    private Long genareteNumber() {
-        Calendar cal = Calendar.getInstance();
-        Integer year = cal.get(Calendar.YEAR);
-        Long next = accountNumberService.nextNumber();
-        return Long.parseLong(year.toString() + String.format("%04d", next));
+    private Long genareteNumber(int type) {
+        return accountNumberService.genareteNumber(type);
     }
 }

@@ -5,7 +5,8 @@
  */
 package com.bank.acelera.service;
 
-import com.bank.acelera.model.Account;
+import com.bank.acelera.model.CheckingAccount;
+import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
 import com.bank.acelera.repository.PhysicalRepository;
@@ -46,7 +47,7 @@ public class AccountServiceTests {
     @Test
     public void whenOpenAccount_thenSuccess(){
         // give
-        Account account = accountService.open(1L,"PasSwOrd");
+        Account account = accountService.openCheckingAccount(1L,"PasSwOrd");
                 
         // then
         Assertions.assertThat(account).isNotNull();
@@ -56,7 +57,7 @@ public class AccountServiceTests {
     public void whenAddingAMovementToAClosedAccount_thenDoesNotAllowOperation() throws UnsupportedOperationException {
         // given 
         String password = "PasSwOrd";
-        Account account = new Account();
+        Account account = new CheckingAccount();
         account.open(11111113L, password, physical);
         
         // when
@@ -71,7 +72,7 @@ public class AccountServiceTests {
     public void whenAddingAMovementNoAccountBalance_thenDoesNotAllowOperation() {
         // given
         String password = "PasSwOrd";
-        Account account = new Account();
+        Account account = new CheckingAccount();
         account.open(11111113L, password, physical);
 
         // when
