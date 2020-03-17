@@ -10,7 +10,7 @@ import com.bank.acelera.controller.response.MovementResponse;
 import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.controller.converter.MovementConverter;
-import com.bank.acelera.repository.MovementRepository;
+import com.bank.acelera.repository.account.MovementRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

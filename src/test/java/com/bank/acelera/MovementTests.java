@@ -6,7 +6,7 @@ import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import com.bank.acelera.repository.MovementRepository;
+import com.bank.acelera.repository.account.MovementRepository;
 import com.bank.acelera.service.MovementService;
 import java.util.Date;
 import java.util.LinkedList;

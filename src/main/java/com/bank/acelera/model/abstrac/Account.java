@@ -6,7 +6,6 @@
 package com.bank.acelera.model.abstrac;
 
 import com.bank.acelera.model.Movement;
-import com.bank.acelera.model.abstrac.Person;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,7 +1,6 @@
 package com.bank.acelera.model;
 
 import com.bank.acelera.model.abstrac.Account;
-import com.bank.acelera.model.Physical;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.bank.acelera.repository.PhysicalRepository;
+import com.bank.acelera.repository.person.PhysicalRepository;
 
 @SpringBootTest
 public class AccountTests {

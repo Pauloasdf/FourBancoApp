@@ -3,20 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bank.acelera.repository;
+package com.bank.acelera.repository.account;
 
-import com.bank.acelera.model.abstrac.Account;
+import com.bank.acelera.model.AccountNumber;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.Optional;
 
 /**
  *
  * @author lauro
  */
 @Repository
-public interface AccountRepository  extends JpaRepository<Account, Integer> {
-    
-    Optional<Account> findByNumber(long number);
+public interface AccountNumberRepository  extends JpaRepository<AccountNumber, Integer> {
     
 }

@@ -6,7 +6,7 @@
 package com.bank.acelera.service;
 
 import com.bank.acelera.model.AccountNumber;
-import com.bank.acelera.repository.AccountNumberRepository;
+import com.bank.acelera.repository.account.AccountNumberRepository;
 import java.util.Calendar;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ class AccountNumberService {
     AccountNumberRepository accountNumberRepository;
     
     /**
-     * 
+     * save Account number
      * @param number
      * @return 
      */
@@ -32,7 +32,7 @@ class AccountNumberService {
     }
     
     /**
-     * 
+     * new instance of account number
      * @return 
      */
     private AccountNumber newAccountNumber(int type){
@@ -43,7 +43,7 @@ class AccountNumberService {
     }
 
     /**
-     * 
+     * next number
      * @return 
      */
     private Long nextNumber(int type) {
@@ -60,10 +60,9 @@ class AccountNumberService {
      * @return 
      */
     public Long genareteNumber(int type){
-        Calendar cal = Calendar.getInstance();
-        Integer year = cal.get(Calendar.YEAR);
+        Integer year = Calendar.getInstance().get(Calendar.YEAR);
         Long next = this.nextNumber(type);
         
         return Long.parseLong(year.toString()+ type + String.format("%04d", next));
-    }   
+    }
 }

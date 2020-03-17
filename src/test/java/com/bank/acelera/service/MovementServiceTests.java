@@ -4,8 +4,8 @@ import com.bank.acelera.model.CheckingAccount;
 import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
-import com.bank.acelera.repository.AccountRepository;
-import com.bank.acelera.repository.PhysicalRepository;
+import com.bank.acelera.repository.account.AccountRepository;
+import com.bank.acelera.repository.person.PersonRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class MovementServiceTests {
     private AccountRepository accountRepository;
     
     @Autowired
-    private PhysicalRepository physicalRepository;
+    private PersonRepository personRepository;
     
     @Autowired
     private MovementService movementService;
@@ -29,13 +29,13 @@ public class MovementServiceTests {
 
     @BeforeEach
     public void setUp() {
-        if (physicalRepository.findByName("João alfredo") == null) {
+        if (personRepository.findByName("João alfredo") == null) {
             this.physical = new Physical();
             this.physical.setName("João alfredo");
             this.physical.setCpf("123.123.123-53");
-            this.physical = physicalRepository.save(this.physical);
+            this.physical = personRepository.save(this.physical);
         } else {
-            this.physical = physicalRepository.findByName("João alfredo");
+            this.physical = (Physical) personRepository.findByName("João alfredo");
         }
     }
     private Physical physical;
@@ -48,7 +48,7 @@ public class MovementServiceTests {
         Account account = new CheckingAccount();
         account.open(accountNumberService.genareteNumber(2), password, physical);
         accountRepository.save(account);
-
+        
         // when
         float balance0 = account.getBalance();
         

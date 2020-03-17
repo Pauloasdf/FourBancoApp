@@ -9,7 +9,7 @@ import com.bank.acelera.model.CheckingAccount;
 import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
-import com.bank.acelera.repository.PhysicalRepository;
+import com.bank.acelera.repository.person.PhysicalRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +29,9 @@ public class AccountServiceTests {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private AccountNumberService accountNumberService;
+
     private Physical physical;
 
     @BeforeEach
@@ -43,12 +46,21 @@ public class AccountServiceTests {
             this.physical = physicalRepository.findByName("João alfredo");
         }
     }
-    
+
     @Test
-    public void whenOpenAccount_thenSuccess(){
+    public void whenCheckingAccount_thenSuccess() {
         // give
-        Account account = accountService.openCheckingAccount(1L,"PasSwOrd");
-                
+        Account account = accountService.openCheckingAccount(1L, "PasSwOrd");
+
+        // then
+        Assertions.assertThat(account).isNotNull();
+    }
+
+    @Test
+    public void whenSavingsAccount_thenSuccess() {
+        // give
+        Account account = accountService.openSavingsAccount(1L, "PasSwOrd");
+
         // then
         Assertions.assertThat(account).isNotNull();
     }
@@ -58,8 +70,11 @@ public class AccountServiceTests {
         // given 
         String password = "PasSwOrd";
         Account account = new CheckingAccount();
-        account.open(11111113L, password, physical);
-        
+        account.open(
+                accountNumberService.genareteNumber(accountService.SEGUENCE_TYPE_CHECKING_ACCOUNT),
+                password,
+                physical);
+
         // when
         account.close(password);
         boolean allowed = accountService.allowedMovement(account, new Movement(10.00F, Movement.Type.CREDIT));
@@ -73,7 +88,10 @@ public class AccountServiceTests {
         // given
         String password = "PasSwOrd";
         Account account = new CheckingAccount();
-        account.open(11111113L, password, physical);
+        account.open(
+                accountNumberService.genareteNumber(accountService.SEGUENCE_TYPE_CHECKING_ACCOUNT),
+                password,
+                physical);
 
         // when
         boolean allowed = accountService.allowedMovement(account, new Movement(10.00F, Movement.Type.DEBIT));
@@ -81,5 +99,4 @@ public class AccountServiceTests {
         // then
         Assertions.assertThat(allowed).isFalse();
     }
-
 }

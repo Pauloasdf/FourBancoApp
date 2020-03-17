@@ -5,10 +5,8 @@
  */
 package com.bank.acelera.service;
 
-import com.bank.acelera.model.Legal;
-import com.bank.acelera.model.Physical;
 import com.bank.acelera.model.abstrac.Person;
-import com.bank.acelera.repository.PersonBaseRepository;
+import com.bank.acelera.repository.person.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +18,10 @@ import org.springframework.stereotype.Service;
 class PersonService {
 
     @Autowired
-    private PersonBaseRepository<Physical> physicalRepository;
-    
-    @Autowired
-    private PersonBaseRepository<Legal> legalRepository;
-    
+    private PersonRepository personRepository;
+        
     public Person findById(Long personId) {
-        return physicalRepository.findById(personId).get();
+        return personRepository.findById(personId).get();
     }
     
 }

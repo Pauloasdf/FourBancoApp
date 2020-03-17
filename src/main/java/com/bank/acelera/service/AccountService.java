@@ -10,7 +10,7 @@ import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.SavingsAccount;
 import com.bank.acelera.model.abstrac.Person;
-import com.bank.acelera.repository.AccountRepository;
+import com.bank.acelera.repository.account.AccountRepository;
 
 import java.util.Optional;
 
@@ -24,9 +24,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
     
-    private static int SEGUENCE_TYPE_SAVINGS_ACCOUNT = 1;
+    public static int SEGUENCE_TYPE_SAVINGS_ACCOUNT = 1;
     
-    private static int SEGUENCE_TYPE_CHECKING_ACCOUNT = 2;
+    public static int SEGUENCE_TYPE_CHECKING_ACCOUNT = 2;
     
     @Autowired
     private AccountRepository accountRepository;
