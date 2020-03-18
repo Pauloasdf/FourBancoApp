@@ -1,0 +1,25 @@
+version: "3.3"
+services:
+  java:
+    build: ./java
+    image: openjdk
+    container_name: java-web
+    restart: always
+    volumes:
+      - /var/www/html/4bank
+    ports: ["8080:8080"]
+    environment:
+      - LOCAL_DOCKER_ENV=1
+
+  database:
+    build: ./mysql
+    image: mysql
+    container_name: mysql-db
+    volumes:
+      - /var/lib/mysql
+    restart: always
+    command: mysqld --sql_mode=""
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+    ports:
+      - "3030:3306"
