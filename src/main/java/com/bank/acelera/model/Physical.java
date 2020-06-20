@@ -17,11 +17,12 @@ public class Physical extends Person {
     
     private String cpf;
 
-    public String getCpf() {
-        return cpf;
+    public Physical(String name, String cpf) {
+        this.name = name;
+        this.cpf = cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public String getCpf() {
+        return cpf;
     }
 }

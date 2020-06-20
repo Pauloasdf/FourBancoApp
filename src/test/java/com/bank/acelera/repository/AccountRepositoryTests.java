@@ -10,7 +10,6 @@ import com.bank.acelera.repository.account.AccountRepository;
 import com.bank.acelera.model.CheckingAccount;
 import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Physical;
-import com.bank.acelera.model.SavingsAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,9 +35,7 @@ public class AccountRepositoryTests {
     public void setUp() {
 
         if (personRepository.findByName("João alfredo") == null) {
-            this.physical = new Physical();
-            this.physical.setName("João alfredo");
-            this.physical.setCpf("123.123.123-53");
+            this.physical = new Physical("João alfredo", "123.123.123-53");
             this.physical = personRepository.save(this.physical);
         } else {
             this.physical = (Physical) personRepository.findByName("João alfredo");

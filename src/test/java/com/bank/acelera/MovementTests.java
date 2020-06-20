@@ -33,9 +33,7 @@ class MovementTests {
     @BeforeEach
     public void init() {
 
-        Physical person = new Physical();
-        person.setName("João alfredo");
-        person.setCpf("123.123.123-53");
+        Physical person = new Physical("João alfredo", "123.123.123-53");
 
         Account account = new CheckingAccount();
         account.open(11111112L, "PasSwOrd", person);

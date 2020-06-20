@@ -30,9 +30,7 @@ public class MovementServiceTests {
     @BeforeEach
     public void setUp() {
         if (personRepository.findByName("João alfredo") == null) {
-            this.physical = new Physical();
-            this.physical.setName("João alfredo");
-            this.physical.setCpf("123.123.123-53");
+            this.physical = new Physical("João alfredo", "123.123.123-53");
             this.physical = personRepository.save(this.physical);
         } else {
             this.physical = (Physical) personRepository.findByName("João alfredo");

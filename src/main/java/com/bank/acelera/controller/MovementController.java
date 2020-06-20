@@ -2,7 +2,6 @@ package com.bank.acelera.controller;
 
 import com.bank.acelera.controller.request.MovementRequest;
 import com.bank.acelera.controller.response.MovementResponse;
-import com.bank.acelera.service.AccountService;
 import com.bank.acelera.service.MovementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,6 @@ public class MovementController {
             }
         }
         
-
         return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
     }
 

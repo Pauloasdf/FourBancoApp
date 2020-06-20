@@ -17,9 +17,7 @@ public class PersonRepositoryTests {
     public void whenFindByName_thenReturnPhysical() {
         // given
         String name = "alex";
-        Physical physical = new Physical();
-        physical.setName(name);
-        physical.setCpf("123.123.123-53");
+        Physical physical = new Physical(name, "123.123.123-53");
         physicalRepository.save(physical);
         
         // when

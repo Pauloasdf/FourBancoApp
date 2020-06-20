@@ -23,12 +23,12 @@ public abstract class Person {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
     
-    private String name;
+    protected String name;
     
     @OneToMany(mappedBy = "person")
-    private List<Account> accounts;
+    protected List<Account> accounts;
 
     public Long getId() {
         return id;
@@ -37,11 +37,7 @@ public abstract class Person {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    
     public List<Account> getAccounts() {
         return accounts;
     }

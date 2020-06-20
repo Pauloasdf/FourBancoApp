@@ -36,7 +36,7 @@ public class MovementControllerTest {
     @Autowired
     AccountService accountService;
     
-    // Used for converting heroes to/from JSON
+    // Used for converting Objetc to/from JSON
     private ObjectMapper mapper = new ObjectMapper();
     
     @Test

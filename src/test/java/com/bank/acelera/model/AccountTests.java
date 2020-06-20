@@ -30,9 +30,7 @@ public class AccountTests {
         validator = factory.getValidator();
 
         if (physicalRepository.findByName("João alfredo") == null) {
-            this.physical = new Physical();
-            this.physical.setName("João alfredo");
-            this.physical.setCpf("123.123.123-53");
+            this.physical = new Physical("João alfredo", "123.123.123-53");
             this.physical = physicalRepository.save(this.physical);
         } else {
             this.physical = physicalRepository.findByName("João alfredo");
