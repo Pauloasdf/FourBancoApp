@@ -17,6 +17,8 @@ public class Physical extends Person {
     
     private String cpf;
 
+    public Physical() {}
+
     public Physical(String name, String cpf) {
         this.name = name;
         this.cpf = cpf;
