@@ -16,10 +16,16 @@ public class PersonController {
     
     @PostMapping("/create")
     public ResponseEntity createNewPerson(@RequestBody PersonRequest personRequest){
+        try {
             if(personService.create(personRequest)){
                 return ResponseEntity.status(HttpStatus.CREATED).body(personRequest);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
             }
+        } catch (Exception e) {
+            if(e instanceof IllegalArgumentException){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();        
     }
 }

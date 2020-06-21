@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 @Entity
 public class Legal extends Person {
     
+    public static String CNPJ_EMPTY = "CNPJ cannot be empty";
+    
     private String cnpj;
 
     public Legal() {}

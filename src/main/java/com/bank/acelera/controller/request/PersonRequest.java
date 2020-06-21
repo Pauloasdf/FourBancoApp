@@ -1,12 +1,24 @@
 package com.bank.acelera.controller.request;
 
 public class PersonRequest {
+    
+    public static enum Type { PHYSICAL, LEGAL };
 
+    private String name;
+    
     private String cpf;
 
     private String cnpj;
-    
-    private String name;
+
+    private Type type;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getCpf() {
         return cpf;
@@ -24,13 +36,20 @@ public class PersonRequest {
         this.cnpj = cnpj;
     }
 
-    public String getName() {
-        return name;
+    public Type getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(Type type) {
+        this.type = type;
     }
-
+    
+    public boolean isPhysical(){
+        return this.type == Type.PHYSICAL;
+    }
+    
+    public boolean isLegal(){
+        return this.type == Type.LEGAL;
+    }
     
 }

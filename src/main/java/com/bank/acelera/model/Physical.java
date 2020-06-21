@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 @Entity
 public class Physical extends Person {
     
+    public static String CPF_EMPTY = "CPF cannot be empty";
+    
     private String cpf;
 
     public Physical() {}

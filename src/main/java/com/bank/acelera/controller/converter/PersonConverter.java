@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 public class PersonConverter {
 
     public Person converter(PersonRequest personRequest) {
-        if(personRequest.getCpf() != null ){
+        if(personRequest.isPhysical()){
             return this.makePhysical(personRequest);
         }
                 
-        if(personRequest.getCnpj() != null){
+        if(personRequest.isLegal()){
             return this.makeLegal(personRequest);
         }
         
@@ -27,5 +27,5 @@ public class PersonConverter {
     
     private Legal makeLegal(PersonRequest personRequest){
         return new Legal(personRequest.getName(), personRequest.getCnpj());
-    }    
+    }
 }

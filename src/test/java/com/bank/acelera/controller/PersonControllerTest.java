@@ -6,13 +6,10 @@
 package com.bank.acelera.controller;
 
 import com.bank.acelera.service.AccountService;
-import com.bank.acelera.controller.request.MovementRequest;
+import com.bank.acelera.controller.request.PersonRequest;
 import com.bank.acelera.model.Legal;
-import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
-import com.bank.acelera.model.abstrac.Person;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,9 +38,32 @@ public class PersonControllerTest {
     private ObjectMapper mapper = new ObjectMapper();
     
     @Test
+    void whenTheCpfIsEmpty_thenStatus400() throws Exception {
+
+        PersonRequest person = new PersonRequest();
+        person.setName("Joao Alfredo");
+        person.setCpf("");
+        person.setType(PersonRequest.Type.PHYSICAL);
+        
+        byte[] personJson = toJson(person);
+        
+        mvc.perform(
+                post("/person/create")
+                .content(personJson)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest())
+         .andExpect(content().string(Physical.CPF_EMPTY));
+    }
+    
+    @Test
     void createPhysical() throws Exception {
-                
-        byte[] personJson = toJson(new Physical("Joao Alfredo","123.123.123-56"));
+
+        PersonRequest person = new PersonRequest();
+        person.setName("Joao Alfredo");
+        person.setCpf("123.123.123-56");
+        person.setType(PersonRequest.Type.PHYSICAL);
+        
+        byte[] personJson = toJson(person);
         
         mvc.perform(
                 post("/person/create")
@@ -54,9 +73,32 @@ public class PersonControllerTest {
     }
     
     @Test
+    void whenTheCnpjIsEmpty_thenStatus400() throws Exception {
+
+        PersonRequest person = new PersonRequest();
+        person.setName("Aceleraca LTDA");
+        person.setCnpj("");
+        person.setType(PersonRequest.Type.LEGAL);
+        
+        byte[] personJson = toJson(person);
+        
+        mvc.perform(
+                post("/person/create")
+                .content(personJson)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest())
+         .andExpect(content().string(Legal.CNPJ_EMPTY));
+    }
+    
+    @Test
     void createLegal() throws Exception {
                 
-        byte[] personJson = toJson(new Legal("Acelera LTDA","28.249.305/0001-50"));
+        PersonRequest person = new PersonRequest();
+        person.setName("Acelera LTDA");
+        person.setCnpj("28.249.305/0001-50");
+        person.setType(PersonRequest.Type.LEGAL);
+        
+        byte[] personJson = toJson(person);
         
         mvc.perform(
                 post("/person/create")
