@@ -19,6 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 class AccountNumberService {
     
+    
+    public static int SEGUENCE_TYPE_SAVINGS_ACCOUNT = 1;
+    
+    public static int SEGUENCE_TYPE_CHECKING_ACCOUNT = 2;
+    
     @Autowired
     AccountNumberRepository accountNumberRepository;
     

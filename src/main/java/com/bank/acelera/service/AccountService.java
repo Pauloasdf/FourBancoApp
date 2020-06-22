@@ -23,11 +23,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccountService {
-    
-    public static int SEGUENCE_TYPE_SAVINGS_ACCOUNT = 1;
-    
-    public static int SEGUENCE_TYPE_CHECKING_ACCOUNT = 2;
-    
+        
     @Autowired
     private AccountRepository accountRepository;
         
@@ -108,7 +104,7 @@ public class AccountService {
      * @return 
      */
     public Account openSavingsAccount(long personId, String pasSwOrd){
-        return this.open(personId, pasSwOrd,this.genareteNumber(SEGUENCE_TYPE_SAVINGS_ACCOUNT), new SavingsAccount());
+        return this.open(personId, pasSwOrd,this.genareteNumberSavings(), new SavingsAccount());
     }
 
     /**
@@ -118,7 +114,7 @@ public class AccountService {
      * @return 
      */
     public Account openCheckingAccount(long personId, String pasSwOrd){
-        return this.open(personId, pasSwOrd,this.genareteNumber(SEGUENCE_TYPE_CHECKING_ACCOUNT), new CheckingAccount());
+        return this.open(personId, pasSwOrd,this.genareteNumberChecking(), new CheckingAccount());
     }
     
     /**
@@ -135,11 +131,20 @@ public class AccountService {
     }
 
     /**
-     * Generate next account number by type 
+     * Generate next checking account number
      * @param type
      * @return 
      */
-    private Long genareteNumber(int type) {
-        return accountNumberService.genareteNumber(type);
+    public Long genareteNumberChecking() {
+        return accountNumberService.genareteNumber(AccountNumberService.SEGUENCE_TYPE_CHECKING_ACCOUNT);
+    }
+    
+    /**
+     * Generate next saving account number
+     * @param type
+     * @return 
+     */
+    public Long genareteNumberSavings() {
+        return accountNumberService.genareteNumber(AccountNumberService.SEGUENCE_TYPE_SAVINGS_ACCOUNT);
     }
 }

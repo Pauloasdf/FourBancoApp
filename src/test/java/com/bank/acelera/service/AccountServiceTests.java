@@ -29,9 +29,6 @@ public class AccountServiceTests {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private AccountNumberService accountNumberService;
-
     private Physical physical;
 
     @BeforeEach
@@ -69,7 +66,7 @@ public class AccountServiceTests {
         String password = "PasSwOrd";
         Account account = new CheckingAccount();
         account.open(
-                accountNumberService.genareteNumber(accountService.SEGUENCE_TYPE_CHECKING_ACCOUNT),
+                accountService.genareteNumberChecking(),
                 password,
                 physical);
 
@@ -87,7 +84,7 @@ public class AccountServiceTests {
         String password = "PasSwOrd";
         Account account = new CheckingAccount();
         account.open(
-                accountNumberService.genareteNumber(accountService.SEGUENCE_TYPE_CHECKING_ACCOUNT),
+                accountService.genareteNumberChecking(),
                 password,
                 physical);
 
