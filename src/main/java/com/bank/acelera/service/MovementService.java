@@ -97,8 +97,8 @@ public class MovementService {
             movement.setAccount(account);
 
             try {
-                movement = this.save(movement);
                 accountService.calculateTheBalance(account, movement);
+                this.save(movement);
                 accountService.save(account);
                 return true;
             } catch (Exception e) {

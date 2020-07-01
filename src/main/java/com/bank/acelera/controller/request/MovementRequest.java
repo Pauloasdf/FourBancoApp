@@ -1,6 +1,8 @@
 package com.bank.acelera.controller.request;
 
 public class MovementRequest {
+    
+    public static enum Type { CANCELED , CREDIT , DEBIT };
 
     private Float value;
 
