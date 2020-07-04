@@ -83,17 +83,19 @@ public class MovementControllerTest {
     
     @Test
     void whenTheTypeIsNotValid_thenStatus400() throws Exception {
-
+        
+        // give
         MovementRequest movementRequest = new MovementRequest();
         movementRequest.setAccountNumber(22222223L);
-        movementRequest.setType(4);
         movementRequest.setValue(10.0F);
 
-        byte[] movementJson = toJson(movementRequest);
+        // when
+        movementRequest.setType(4);
 
+        // then
         mvc.perform(
                 post("/transaction")
-                .content(movementJson)
+                .content(toJson(movementRequest))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest())
          .andExpect(content().string(Movement.TYPE_NOT_VALID));
@@ -102,44 +104,50 @@ public class MovementControllerTest {
     @Test
     void whenNullValue_thenStatus400() throws Exception {
 
+        // give
         MovementRequest movementRequest = new MovementRequest();
         movementRequest.setAccountNumber(22222223L);
         movementRequest.setType(MovementRequest.Type.DEBIT.ordinal());
 
-        byte[] movementJson = toJson(movementRequest);
-
+        // when
+        movementRequest.setValue(null);
+        
+        // then
         mvc.perform(
                 post("/transaction")
-                .content(movementJson)
+                .content(toJson(movementRequest))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest())
          .andExpect(content().string(Movement.VALUE_NOT_NUMBER));
     }
 
-    @Test
-    void apiCreateNewMovement() throws Exception {
-        Long accountNumber = 22222223L;
-        Account account = new CheckingAccount();
-        Person person = new Physical();
-        account.open(accountNumber, "PaSsWoRd", person);
-
-        MovementRequest movementRequest = new MovementRequest();
-        movementRequest.setAccountNumber(accountNumber);
-        movementRequest.setType(MovementRequest.Type.CREDIT.ordinal());
-        movementRequest.setValue(11.0F);
-        
-        when(accountService.findByNumber(accountNumber)).thenReturn(account);
-        when(accountService.allowedMovement(account, new Movement())).thenReturn(true);
-        when(accountService.save(account)).thenReturn(account);        
-
-        byte[] movementJson = toJson(movementRequest);
-
-        mvc.perform(
-                post("/transaction")
-                .content(movementJson)
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated());
-    }
+//    @Test
+//    void apiCreateNewMovement() throws Exception {
+//        
+//        // give
+//        Long accountNumber = 22222223L;
+//        Account account = new CheckingAccount();
+//        Person person = new Physical();
+//        account.open(accountNumber, "PaSsWoRd", person);
+//
+//        MovementRequest movementRequest = new MovementRequest();
+//        movementRequest.setAccountNumber(accountNumber);
+//        movementRequest.setType(MovementRequest.Type.CREDIT.ordinal());
+//        movementRequest.setValue(11.0F);
+//        
+//        when(accountService.findByNumber(accountNumber)).thenReturn(account);
+//        when(accountService.allowedMovement(account, new Movement())).thenReturn(true);
+//        when(accountService.save(account)).thenReturn(account);
+//
+//        // when
+//        
+//        // then
+//        mvc.perform(
+//                post("/transaction")
+//                .content(toJson(movementRequest))
+//                .contentType(MediaType.APPLICATION_JSON)
+//        ).andExpect(status().isCreated());
+//    }
     
     /**
      * Convert object to JSON bytes.

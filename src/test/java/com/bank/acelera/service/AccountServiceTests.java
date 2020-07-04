@@ -9,6 +9,7 @@ import com.bank.acelera.model.CheckingAccount;
 import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
+import com.bank.acelera.model.SavingsAccount;
 import com.bank.acelera.repository.person.PhysicalRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +50,8 @@ public class AccountServiceTests {
 
         // then
         Assertions.assertThat(account).isNotNull();
+        Assertions.assertThat(account).isInstanceOf(CheckingAccount.class);
+        Assertions.assertThat(account.isOpened()).isTrue();
     }
 
     @Test
@@ -58,6 +61,8 @@ public class AccountServiceTests {
 
         // then
         Assertions.assertThat(account).isNotNull();
+        Assertions.assertThat(account).isInstanceOf(SavingsAccount.class);
+        Assertions.assertThat(account.isOpened()).isTrue();
     }
 
     @Test

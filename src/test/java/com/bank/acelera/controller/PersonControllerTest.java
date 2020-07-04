@@ -34,7 +34,7 @@ public class PersonControllerTest {
     @Autowired
     AccountService accountService;
     
-    // Used for converting heroes to/from JSON
+    // Used for converting Object to/from JSON
     private ObjectMapper mapper = new ObjectMapper();
     
     @Test
@@ -63,11 +63,9 @@ public class PersonControllerTest {
         person.setCpf("123.123.123-56");
         person.setType(PersonRequest.Type.PHYSICAL);
         
-        byte[] personJson = toJson(person);
-        
         mvc.perform(
                 post("/person/create")
-                .content(personJson)
+                .content(toJson(person))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
     }
@@ -79,12 +77,10 @@ public class PersonControllerTest {
         person.setName("Aceleraca LTDA");
         person.setCnpj("");
         person.setType(PersonRequest.Type.LEGAL);
-        
-        byte[] personJson = toJson(person);
-        
+                
         mvc.perform(
                 post("/person/create")
-                .content(personJson)
+                .content(toJson(person))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest())
          .andExpect(content().string(Legal.CNPJ_EMPTY));
@@ -98,11 +94,9 @@ public class PersonControllerTest {
         person.setCnpj("28.249.305/0001-50");
         person.setType(PersonRequest.Type.LEGAL);
         
-        byte[] personJson = toJson(person);
-        
         mvc.perform(
                 post("/person/create")
-                .content(personJson)
+                .content(toJson(person))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
     }
