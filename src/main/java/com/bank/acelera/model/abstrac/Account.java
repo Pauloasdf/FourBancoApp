@@ -9,6 +9,7 @@ import com.bank.acelera.model.Movement;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -132,6 +133,19 @@ public abstract class Account {
             this.closeDate = new Date();
         }
         return this.closeDate != null;
+    }
+    
+    /**
+     * Add movement
+     * 
+     * @param movement
+     * @return 
+     */
+    public boolean addMovement(Movement movement){
+        if(this.movements == null){
+            this.movements = new ArrayList<>();
+        }
+        return this.movements.add(movement);
     }
     
     /**

@@ -87,9 +87,11 @@ public class AccountService {
             switch(movement.getType()){
                 case CREDIT:
                     account.increment(movement.getValue());
+                    account.addMovement(movement);
                    break;
                 case DEBIT:
                     account.reduce(movement.getValue());
+                    account.addMovement(movement);
                     break;
             }
         } else {

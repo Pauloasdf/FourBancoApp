@@ -10,9 +10,7 @@ import com.bank.acelera.model.abstrac.Account;
 import com.bank.acelera.model.Movement;
 import com.bank.acelera.model.Physical;
 import com.bank.acelera.model.SavingsAccount;
-import com.bank.acelera.repository.person.PhysicalRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,23 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AccountServiceTests {
 
     @Autowired
-    private PhysicalRepository physicalRepository;
-
-    @Autowired
     private AccountService accountService;
-
-    private Physical physical;
-
-    @BeforeEach
-    public void setUp() {
-
-        if (physicalRepository.findByName("Jo√£o alfredo") == null) {
-            this.physical = new Physical("Jo√£o alfredo", "123.123.123-53");
-            this.physical = physicalRepository.save(this.physical);
-        } else {
-            this.physical = physicalRepository.findByName("Jo√£o alfredo");
-        }
-    }
 
     @Test
     public void whenCheckingAccount_thenSuccess() {
@@ -73,7 +55,7 @@ public class AccountServiceTests {
         account.open(
                 accountService.genareteNumberChecking(),
                 password,
-                physical);
+                new Physical("Jo„o alfredo", "123.123.123-53"));
 
         // when
         account.close(password);
@@ -91,7 +73,7 @@ public class AccountServiceTests {
         account.open(
                 accountService.genareteNumberChecking(),
                 password,
-                physical);
+                new Physical("Jo„o alfredo", "123.123.123-53"));
 
         // when
         boolean allowed = accountService.allowedMovement(account, new Movement(10.00F, Movement.Type.DEBIT));

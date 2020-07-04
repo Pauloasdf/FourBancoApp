@@ -25,7 +25,7 @@ public class MovementServiceTests {
     private MovementService movementService;
     
     @Autowired
-    private AccountNumberService accountNumberService;
+    private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
@@ -44,7 +44,7 @@ public class MovementServiceTests {
         String password = "PasSwOrd";
 
         Account account = new CheckingAccount();
-        account.open(accountNumberService.genareteNumber(2), password, physical);
+        account.open(accountService.genareteNumberChecking(), password, physical);
         accountRepository.save(account);
         
         // when
