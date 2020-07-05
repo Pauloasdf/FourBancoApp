@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database-platform: mysql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        enableLazyLoadNoTrans: true
+  datasource:
+    url: jdbc:mysql://mysql-server:3306/banco_app?useTimezone=true&serverTimezone=UTC&useSSL=true
+    username: root
+    password: banco_app@123
+    driverClassName: com.mysql.cj.jdbc.Driver
+    platform: mysql
+    initializationMode: always
