@@ -1,0 +1,37 @@
+version: '3.5'
+
+volumes:
+  mysql-db:
+
+services:
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-server
+    environment:
+      MYSQL_DATABASE: 'banco_app'
+      MYSQL_USER: 'banco_app'
+      MYSQL_PASSWORD: 'banco_app@123'
+      MYSQL_ROOT_PASSWORD: 'banco_app@123'
+    ports:
+      - "3306:3306"
+    networks:
+      - banco-app-network
+    volumes:
+      - mysql-db:/var/lib/mysql
+
+  banco-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: banco-app:latest
+    container_name: banco-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - banco-app-network
+
+networks:
+  banco-app-network:

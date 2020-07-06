@@ -1,3 +1,9 @@
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE TABLE `movement`;
+TRUNCATE TABLE `account`;
+TRUNCATE TABLE `person`;
+SET FOREIGN_KEY_CHECKS=1;
+
 INSERT INTO `person` (`dtype`, `id`, `name`, `cnpj`, `cpf`) VALUES ('Physical', 1, 'Pedro alfredo', NULL, '321.123.123-53');
 
 INSERT INTO `account` (`dtype`,`id`, `balance`, `close_date`, `number`, `open_date`, `password`, `person_id`) VALUES ('CheckingAccount',1, 0, NULL, 22222223, '2020-02-01 22:08:54', '472c782e2ea863cf9c98efe3984f908a', 1);
